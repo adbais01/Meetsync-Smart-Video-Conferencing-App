@@ -106,7 +106,7 @@ If you’d like to improve the project, feel free to fork the repo and submit a 
 ---
 
 ## 🧑‍💻 Author
-**Utkarsh Tripathi**  
+**Aditi Bais**  
 Built with ❤️ using Django and ZegoCloud.
 
 ---
