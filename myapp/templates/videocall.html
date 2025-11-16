@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #root {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        
+    #root {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    #control-panel-toggle {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: #1e88e5;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 16px;
+        cursor: pointer;
+        z-index: 10000;
+    }
+
+    #control-panel {
+        position: absolute;
+        top: 70px;
+        left: 20px;
+        width: 260px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        padding: 16px;
+        z-index: 9999;
+        display: none;
+        flex-direction: column;
+        gap: 12px;
+        transition: all 0.3s ease;
+    }
+
+    #control-panel button {
+        padding: 10px 16px;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 14px;
+    }
+
+    #start-aircanvas-btn {
+        background-color: #4CAF50;
+    }
+
+    #toggle-voice-btn {
+        background-color: #333;
+    }
+
+    #make-notes-btn {
+        background-color: #1e88e5;
+    }
+
+    #raise-hand-btn {
+        background-color: #ff9800;
+    }
+
+    #voice-command-box {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 260px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-size: 14px;
+        display: none;
+        z-index: 9999;
+    }
+
+    #live-notes-panel {
+        position: absolute;
+        bottom: 130px;
+        left: 20px;
+        width: 300px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: rgba(255, 255, 255, 0.9);
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        z-index: 9999;
+        font-size: 14px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        display: none;
+    }
+
+    #live-notes-panel h3 {
+        margin-top: 0;
+        margin-bottom: 5px;
+        font-size: 16px;
+        color: #333;
+    }
+
+    #live-notes-content {
+        white-space: pre-wrap;
+        color: #111;
+    }
+
+    @media screen and (max-width: 500px) {
+        #control-panel {
+            width: 90%;
+            left: 5%;
+        }
+    }
+</style>
+
+<body>
+    <div id="root"></div>
+
+    <!-- Toggle Button -->
+    <button id="control-panel-toggle">☰ Controls</button>
+
+    <!-- Collapsible Panel -->
+    <div id="control-panel">
+        <button id="start-aircanvas-btn">Start Air Canvas</button>
+        <button id="toggle-voice-btn">🎙️ Start Voice Control</button>
+        <button id="make-notes-btn">📝 Make Notes</button>
+        <button id="raise-hand-btn">✋ Raise Hand</button>
+    </div>
+
+    <!-- Voice Command Box -->
+    <div id="voice-command-box">🎧 Voice Control Activated</div>
+
+    <!-- Live Notes Panel -->
+    <div id="live-notes-panel">
+        <h3>📝 Live Notes</h3>
+        <div id="live-notes-content"></div>
+    </div>
+    
+      
+    <script src="https://unpkg.com/@zegocloud/zego-uikit-prebuilt/zego-uikit-prebuilt.js"></script>
+    <script>
+        // for side pannel
+
+        const toggleBtn = document.getElementById("control-panel-toggle");
+        const panel = document.getElementById("control-panel");
+
+        toggleBtn.addEventListener("click", () => {
+            panel.style.display = (panel.style.display === "flex") ? "none" : "flex";
+        });
+        //---------------------------------------------------->>>>>>>>>>>>>
+        window.onload = function () {
+            function getUrlParams(url) {
+                let urlStr = url.split('?')[1];
+                const urlSearchParams = new URLSearchParams(urlStr);
+                return Object.fromEntries(urlSearchParams.entries());
+            }
+
+            const roomID = getUrlParams(window.location.href)['roomID'] || (Math.floor(Math.random() * 10000) + "");
+            const userID = Math.floor(Math.random() * 10000) + "";
+            const userName = "{{name}}";
+            // const appID = 475935374;
+            const appID = 1182306152;
+            // const serverSecret = "0a998a9bf38bf9e9cba023a8915d330a";
+            const serverSecret = "ab0dc2c81fc3d84bf2d2e5e9e0588098"
+            const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomID, userID, userName);
+
+            const zp = ZegoUIKitPrebuilt.create(kitToken);
+            zp.joinRoom({
+                container: document.querySelector("#root"),
+                sharedLinks: [{
+                    name: 'Personal link',
+                    url: window.location.protocol + '//' + window.location.host + window.location.pathname + '?roomID=' + roomID,
+                }],
+                scenario: {
+                    mode: ZegoUIKitPrebuilt.VideoConference,
+                },
+                turnOnMicrophoneWhenJoining: false,
+                turnOnCameraWhenJoining: false,
+                showMyCameraToggleButton: true,
+                showMyMicrophoneToggleButton: true,
+                showAudioVideoSettingsButton: true,
+                showScreenSharingButton: true,
+                showTextChat: true,
+                showUserList: true,
+                maxUsers: 50,
+                layout: "Grid",
+                showLayoutButton: true,
+            });
+ //---------------------------------------------------------------------->>>>>>>>>>>> 
+            // 👋 Raise Hand
+            const raiseHandBtn = document.getElementById("raise-hand-btn");
+const HAND_DURATION_MS = 8000;
+
+raiseHandBtn.addEventListener("click", () => {
+    const name = "{{name}}";
+    showCommand(`✋ You raised your hand`);
+
+    const alertDiv = document.createElement("div");
+    alertDiv.innerText = `✋ ${name} raised their hand`;
+    alertDiv.style = `
+        position: absolute;
+        top: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: gold;
+        color: black;
+        padding: 10px 16px;
+        font-weight: bold;
+        border-radius: 8px;
+        z-index: 9999;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    `;
+    document.body.appendChild(alertDiv);
+
+    setTimeout(() => {
+        alertDiv.remove();
+    }, HAND_DURATION_MS);
+});
+
+
+
+ //---------------------------------------------------------------------->>>>>>>>>>>>           
+            fetch("/record-attendance/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: new URLSearchParams({
+                    name: "{{name}}",
+                    roomID: roomID,
+                    status: "join"
+                })
+            });
+
+            // 🔴 Air Canvas logic
+            let airCanvasRunning = false;
+            const airCanvasBtn = document.getElementById("start-aircanvas-btn");
+            airCanvasBtn.addEventListener("click", function () {
+                if (!airCanvasRunning) {
+                    const localVideo = document.querySelector("video");
+                    if (localVideo && localVideo.srcObject) {
+                        localVideo.srcObject.getTracks().forEach(track => {
+                            if (track.kind === "video") track.stop();
+                        });
+                    }
+                    fetch("/start-aircanvas/")
+                        .then(res => res.json())
+                        .then(() => {
+                            alert("Air Canvas started! Share your screen.");
+                            airCanvasBtn.textContent = "Stop Air Canvas";
+                            airCanvasRunning = true;
+                        });
+                } else {
+                    fetch("/stop-aircanvas/")
+                        .then(res => res.json())
+                        .then(() => {
+                            alert("Air Canvas stopped.");
+                            navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                                .then(stream => {
+                                    const localVideo = document.querySelector("video");
+                                    if (localVideo) localVideo.srcObject = stream;
+                                });
+                            airCanvasBtn.textContent = "Start Air Canvas";
+                            airCanvasRunning = false;
+                        });
+                }
+            });
+
+            // 🎙️ Voice Control System
+            let isVoiceActive = false;
+            window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.lang = 'en-US';
+
+            const commandBox = document.getElementById("voice-command-box");
+            const toggleButton = document.getElementById("toggle-voice-btn");
+
+            function showCommand(text) {
+                commandBox.innerText = `💬 ${text}`;
+                commandBox.style.display = "block";
+                setTimeout(() => {
+                    commandBox.style.display = "none";
+                }, 4000);
+            }
+
+            recognition.onresult = function (event) {
+                const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
+                console.log("🗣️ Command: ", transcript);
+                showCommand("Command: " + transcript);
+
+                if (transcript.includes("mute")) {
+                    document.getElementById("ZegoRoomMicButton")?.click();
+                } else if (transcript.includes("unmute") || transcript.includes("un-mute")) {
+                    document.getElementById("ZegoRoomMicButton")?.click();
+                } else if (transcript.includes("turn off camera")) {
+                    document.getElementById("ZegoRoomCameraButton")?.click();
+                } else if (transcript.includes("turn on camera")) {
+                    document.getElementById("ZegoRoomCameraButton")?.click();
+                } else if (transcript.includes("share screen")) {
+                    document.getElementById("ZegoRoomScreenButton")?.click();
+                } else if (transcript.includes("start air canvas")) {
+                    airCanvasBtn.click();
+                } else if (transcript.includes("stop air canvas")) {
+                    airCanvasBtn.click();
+                } else if (transcript.includes("leave") || transcript.includes("end call")) {
+                    document.getElementById("ZegoRoomLeaveButton")?.click();
+                }
+            };
+
+            recognition.onerror = function (e) {
+                console.error("🎤 Voice recognition error:", e);
+                showCommand("❌ Error: " + e.error);
+            };
+
+            toggleButton.addEventListener("click", function () {
+                if (!isVoiceActive) {
+                    recognition.start();
+                    toggleButton.textContent = "🛑 Stop Voice Control";
+                    showCommand("🎧 Voice Control Activated");
+                    isVoiceActive = true;
+                } else {
+                    recognition.stop();
+                    toggleButton.textContent = "🎙️ Start Voice Control";
+                    showCommand("🚫 Voice Control Deactivated");
+                    isVoiceActive = false;
+                }
+            });
+
+            // 📝 Live Notes
+
+            const makeNotesBtn = document.getElementById("make-notes-btn");
+let recognitionNote;
+let isRecordingNotes = false;
+let notesTranscript = "";
+
+makeNotesBtn.addEventListener("click", function () {
+    if (!isRecordingNotes) {
+        notesTranscript = "";
+        const livePanel = document.getElementById("live-notes-content");
+        if (livePanel) {
+            livePanel.textContent = "";  // <--- 🧼 Clean slate
+        }
+
+        recognitionNote = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognitionNote.continuous = true;
+        recognitionNote.interimResults = true;
+        recognitionNote.lang = "en-US";
+
+        recognitionNote.onresult = function (event) {
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const result = event.results[i];
+                if (result.isFinal) {
+                    const finalText = result[0].transcript.trim();
+                    notesTranscript += finalText + "\n";
+                    showCommand("📝 Note: " + finalText);
+
+                    // Optional: also update live UI if you’re using it
+                    const livePanel = document.getElementById("live-notes-content");
+                    if (livePanel) {
+                        livePanel.textContent += finalText + "\n";
+                    }
+                }
+            }
+        };
+
+        recognitionNote.onerror = function (e) {
+            showCommand("❌ Notes error: " + e.error);
+        };
+
+        recognitionNote.start();
+        isRecordingNotes = true;
+        makeNotesBtn.textContent = "📥 Stop & Save Notes";
+        showCommand("🗒️ Note taking started...");
+
+        // Optional: show live notes panel if it exists
+        const panel = document.getElementById("live-notes-panel");
+        if (panel) panel.style.display = "block";
+
+    } else {
+        recognitionNote.stop();
+        isRecordingNotes = false;
+        makeNotesBtn.textContent = "📝 Make Notes";
+        showCommand("📁 Notes saved");
+
+        // Hide live panel if present
+        const panel = document.getElementById("live-notes-panel");
+        if (panel) panel.style.display = "none";
+
+        const blob = new Blob([notesTranscript], { type: "text/plain" });
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `Meeting_Notes_${new Date().toISOString().slice(0, 19).replace(/:/g, "-")}.txt`;
+        link.click();
+    }
+});
+
+
+        };
+    </script>
+</body>
+</html>

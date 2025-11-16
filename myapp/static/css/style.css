@@ -1,0 +1,194 @@
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to bottom, #f0f7ff, #ffffff);
+  color: #333;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 28px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 36px;
+  height: 36px;
+}
+
+.brand {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 1.3rem;
+  color: #555;
+}
+
+.navbar-right i:hover {
+  color: #1a73e8;
+  cursor: pointer;
+}
+
+.profile-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 90px 20px 60px;
+  text-align: center;
+}
+
+.hero-image {
+  width: 340px;
+  margin-top: -35px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.hero h1 {
+  font-size: 2.7rem;
+  font-weight: 700;
+  margin: 24px 0 18px;
+  color: #1a1a1a;
+}
+
+.hero h1 span {
+  color: #1a73e8;
+}
+
+.hero p {
+  font-size: 1.05rem;
+  color: #444;
+  max-width: 600px;
+  margin-bottom: 36px;
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  text-decoration: none;
+  padding: 12px 26px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 1.05rem;
+  transition: 0.3s ease;
+}
+
+.primary {
+  background: #1a73e8;
+  color: #fff;
+  border: none;
+}
+
+.primary:hover {
+  background: #155bc1;
+}
+
+.secondary {
+  background: #f1f1f1;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.secondary:hover {
+  background: #e0e0e0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-image {
+    width: 270px;
+    margin-top: -25px;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 20px;
+  }
+
+  .navbar-right {
+    margin-top: 10px;
+    flex-wrap: wrap;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero p {
+    font-size: 0.95rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn {
+    padding: 10px 22px;
+    font-size: 1rem;
+  }
+
+  .hero-image {
+    width: 220px;
+    margin-top: -20px;
+  }
+
+  .navbar-right {
+    font-size: 1.1rem;
+  }
+}

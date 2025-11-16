@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MeetSync</title>
+
+  <!-- Static CSS and Tailwind -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <style>
+    .feature-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background-color: white;
+      text-align: center;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      background-color: #f9fafb;
+    }
+
+    .feature-card img {
+      max-width: 50px;
+      margin-bottom: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover img {
+      transform: scale(1.1);
+    }
+
+    .feature-card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-card p {
+      font-size: 1rem;
+      color: #666;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="flex justify-between items-center p-5 bg-transparent">
+    <div class="flex items-center gap-3">
+      <img src="{% static 'images/logo.png' %}" alt="MeetSync Logo" class="w-10 h-10 rounded-full" />
+      <span class="text-2xl font-bold text-blue-600">MeetSync</span>
+    </div>
+    <div class="flex items-center gap-6 text-gray-700 text-lg">
+      <a href="{% url 'index' %}" class="hover:text-blue-600 font-medium">Home</a>
+      <a href="{% url 'login' %}" class="hover:text-blue-600 font-medium">Login</a>
+      <a href="{% url 'register' %}" class="hover:text-blue-600 font-medium">Register</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <main class="text-center p-8 flex flex-col items-center flex-grow">
+    <img src="{% static 'images/collaboration.png' %}" alt="Conference" class="mx-auto max-w-xs sm:max-w-md md:max-w-lg mb-8 -mt-12"/>
+    <h1 class="text-4xl font-bold text-gray-800 mb-4">Welcome to <span class="text-blue-600">MeetSync</span></h1>
+    <p class="text-gray-600 text-lg mb-6 max-w-2xl">
+      Effortlessly connect, meet, and collaborate in real-time with your team or friends — all in one simple place.
+    </p>
+    <div class="flex flex-wrap justify-center gap-4 mb-10">
+      <a href="{% url 'register' %}" class="bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition">Get Started</a>
+      <a href="{% url 'login' %}" class="bg-gray-200 text-gray-800 py-3 px-6 rounded-lg hover:bg-gray-300 transition">Log In</a>
+    </div>
+
+    <!-- Features Section -->
+    <section class="w-full max-w-7xl mx-auto px-4 py-12">
+      <h2 class="text-3xl font-bold text-gray-800 text-center mb-10">Smart Features</h2>
+      <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+
+        <div class="feature-card">
+          <img src="{% static 'images/automatic-attendance.png' %}" alt="Automatic Attendance Recording" />
+          <h3>Automatic Attendance</h3>
+          <p>Efficiently track attendance with automatic recording during meetings, saving time and effort.</p>
+        </div>
+
+        <div class="feature-card">
+          <img src="{% static 'images/voice-control.png' %}" alt="Voice Control" />
+          <h3>Voice Control</h3>
+          <p>Control your meetings hands-free with voice commands for a seamless and more intuitive experience.</p>
+        </div>
+
+        <div class="feature-card">
+          <img src="{% static 'images/air-canvas.png' %}" alt="Air Canvas" />
+          <h3>Air Canvas</h3>
+          <p>Draw, sketch, and collaborate on an interactive virtual canvas during meetings, making brainstorming fun and effective.</p>
+        </div>
+
+        <div class="feature-card">
+          <img src="{% static 'images/note-making.png' %}" alt="Note Making" />
+          <h3>Note Making</h3>
+          <p>Take notes directly within the platform, with automatic saving and easy retrieval for future meetings.</p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 text-sm text-gray-500">
+    © 2025 MeetSync. All rights reserved.
+  </footer>
+
+  <!-- Static JS -->
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

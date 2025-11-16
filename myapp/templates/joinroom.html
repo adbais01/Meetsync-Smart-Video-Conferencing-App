@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Join Meeting - MeetSync</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-blue-100 to-blue-50 min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <header class="bg-white shadow-md p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-blue-600">MeetSync</h1>
+    <nav class="space-x-4">
+      <a href="{% url 'dashboard' %}" class="text-gray-700 hover:text-blue-600 font-medium">Dashboard</a>
+      <a href="{% url 'logout' %}" class="text-red-500 hover:text-red-700 font-medium">Logout</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow flex flex-col items-center justify-center px-4 text-center">
+    <div class="bg-white p-10 rounded-2xl shadow-xl max-w-md w-full">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">Join a Meeting</h2>
+      <p class="text-gray-600 mb-6">Enter the meeting code below:</p>
+
+      <form method="POST" action="{% url 'join' %}">
+        {% csrf_token %}
+        <input type="text" name="roomID" placeholder="Enter meeting code" class="border border-gray-300 rounded-lg p-3 w-full mb-4"/>
+
+        <button type="submit" class="bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition w-full">
+          Join Meeting
+        </button>
+
+        <!-- Django messages -->
+        <div class="mt-4 text-sm">
+          {% if success %}
+            <p class="text-green-600 font-semibold">{{ success }}</p>
+          {% endif %}
+          {% if error %}
+            <p class="text-red-600 font-semibold">{{ error }}</p>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 text-sm text-gray-500">
+    © 2025 MeetSync. All rights reserved.
+  </footer>
+
+</body>
+</html>
